@@ -21,8 +21,11 @@ if use_ticker:
         hist = ticker_data.history(period="1d")
         stock_price = hist["Close"].iloc[-1]
         info = ticker_data.info
-        dividend_per_share = info.get("dividendRate", 0.0) / 4  # Estimated quarterly dividend
-        st.success(f"Loaded: {ticker_symbol.upper()} | Price: ${stock_price:.2f} | Est. Dividend: ${dividend_per_share:.2f}")
+        dividend_rate = info.get("dividendRate")
+        dividend_per_share = (dividend_rate / 4) if dividend_rate else 0.0  # Estimated quarterly dividend
+        st.success(
+            f"Loaded: {ticker_symbol.upper()} | Price: ${stock_price:.2f} | Est. Dividend: ${dividend_per_share:.2f}"
+        )
     except Exception as e:
         st.warning(f"Could not fetch data for {ticker_symbol.upper()}: {e}")
 
